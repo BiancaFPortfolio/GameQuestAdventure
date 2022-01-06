@@ -16,6 +16,8 @@ userField = InputField(100, 250, 200, 32, "Username")
 passField = InputField(100, 300, 200, 32, "Password")
 newButton = LoginButton(110, 360, 80, 32, "Create", "new")
 returningButton = LoginButton(210, 360, 80, 32, "Login", "login")
+#Animation counter
+menuAnimation = 0
 
 def redrawWindow():
     win.fill((255, 255, 255))
@@ -29,6 +31,7 @@ def main():
     main_menu_running = True
     while running:
         clock.tick(60)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -53,7 +56,14 @@ def main_menu(event):
     return True
 
 def main_menu_draw():
-    win.fill((255, 255, 255))
+    global menuAnimation
+    backgroundAnimation = pygame.image.load("./Graphics/MenuSplashAnimation/pixil-frame-0.png")
+    if menuAnimation >= 0 and menuAnimation <= 15:
+        backgroundAnimation = pygame.image.load("./Graphics/MenuSplashAnimation/pixil-frame-{}.png".format(menuAnimation))
+    backgroundAnimation = pygame.transform.scale(backgroundAnimation, (1280, 720))
+    imagerect = backgroundAnimation.get_rect()
+    win.blit(backgroundAnimation, imagerect)
+    menuAnimation +=1
     userField.draw(win)
     passField.draw(win)
     newButton.draw(win)
