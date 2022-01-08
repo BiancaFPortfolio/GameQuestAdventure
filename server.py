@@ -38,8 +38,8 @@ def log(conn):
                 loginData = data.split("@", 3)
                 if(loginData[2] == "new"):
                     character = loginVerification.create(loginData[0], loginData[1])
-                    print(character)
                     conn.send(str.encode(character))
+                    print(character)
                     if character != None:
                         play(conn, character)
                 elif(loginData[2] == "login"):
@@ -50,15 +50,13 @@ def log(conn):
         except Exception as e:
             print(e)
             break
-
-        conn.sendall(str.encode(reply))
     
     print("Player has lost connection.")
     conn.close()
         
 def play(conn, character):
-    try:
-        while True:
+    while True:
+        try:
             #Check for poll from client
             data = conn.recv(RECV_BITS).decode("utf-8")
             
@@ -71,10 +69,10 @@ def play(conn, character):
             #Read player action
             #Update board
             pass
-    except Exception as e:
-        print("Player has lost connection.")
-        conn.close()
-    pass
+        except Exception as e:
+            print(e)
+            break
+    conn.close()
 
 
 while True:

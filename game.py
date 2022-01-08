@@ -27,9 +27,11 @@ class World:
         s = ""
         for i in range(0, 20):
             for j in range(0, 20):
-                s += self.map[i][j]
+                s += str(self.map[i][j])
                 if i != 20 and j != 20:
                     s += "@"
+        
+        return s
 
 class Monster:
     def __init__(self, id, name, lootLevel, difficultyClass, hp):

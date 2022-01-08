@@ -24,7 +24,7 @@ START_X = 320
 START_Y = 18
 
 def redrawWindow():
-    win.fill((255, 255, 255))
+    win.fill((0, 0, 0))
     pygame.display.update()
 
 
@@ -33,16 +33,25 @@ def main():
 
     running = True
     main_menu_running = True
+    #Background
+    backgroundAnimation = pygame.image.load("./Graphics/MenuSplashAnimation/pixil-frame-0.png")
+    imagerect = backgroundAnimation.get_rect()
+    win.blit(backgroundAnimation, imagerect)
+    pygame.display.update()
     while running:
-        clock.tick(60)
+        clock.tick(100)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
                 pygame.quit()
             if main_menu_running:
+                x = threading.Thread(target = main_menu_draw, args = ())
+                x.start()
                 chara = main_menu(event)
+                x.join()
                 if chara != None:
+                    chara.decode()
                     main_menu_running = False
             else:
                 x = threading.Thread(target = update_board, args = (0,))
@@ -55,25 +64,21 @@ def main_menu(event):
     #User authentication UI
     #Send String to server in the form "username:password"
     #Password will then be converted to hash and the corresponding character will be returned and gameplay may commence
-    main_menu_draw()
     userField.handle_event(event)
     passField.handle_event(event)
     #Will stop main_menu_running if user successfully logs in
     log = newButton.handle_event(event, userField.text, passField.text, net)
     if log == None:
         log = returningButton.handle_event(event, userField.text, passField.text, net)
-    main_menu_draw()
 
     return log
 
 def main_menu_draw():
-    global menuAnimation
-    backgroundAnimation = pygame.image.load("./Graphics/MenuSplashAnimation/pixil-frame-0.png")
-    if menuAnimation >= 0 and menuAnimation <= 15:
-        backgroundAnimation = pygame.image.load("./Graphics/MenuSplashAnimation/pixil-frame-{}.png".format(menuAnimation))
-    imagerect = backgroundAnimation.get_rect()
-    win.blit(backgroundAnimation, imagerect)
-    menuAnimation += 1
+    #global menuAnimation
+    
+    #if menuAnimation >= 0 and menuAnimation <= 15:
+        #backgroundAnimation = pygame.image.load("./Graphics/MenuSplashAnimation/pixil-frame-{}.png".format(menuAnimation))
+    #menuAnimation += 1
     userField.draw(win)
     passField.draw(win)
     newButton.draw(win)
@@ -98,11 +103,16 @@ def update_action(event, character):
 
 def update_board(threadID):
     #Will constantly rebuild the board from the data in the server
-    boardState = net.send("board")
-    boardState.split("@")
-    b = Board("", win)
-    b.draw()
-    pygame.display.update()
+    redrawWindow()
+    while True:
+        try:
+            boardState = net.send("board").decode()
+            board = boardState.split("@")
+            b = Board("", win, board)
+            b.draw()
+            pygame.display.update()
+        except Exception as e:
+            print(e)
 
 if __name__ == "__main__":
     main()
