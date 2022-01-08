@@ -49,18 +49,19 @@ def main_menu(event):
     #INSTEAD OF HAVING TWO SETS OF FIELDS, JUST HAVE TWO BUTTONS AND NO ENTER EFFECT
     userField.handle_event(event)
     passField.handle_event(event)
-    newButton.handle_event(event, userField.text, passField.text, net)
-    returningButton.handle_event(event, userField.text, passField.text, net)
+    #Will stop main_menu_running if user successfully logs in
+    log = newButton.handle_event(event, userField.text, passField.text, net)
+    if not log:
+        log = returningButton.handle_event(event, userField.text, passField.text, net)
     main_menu_draw()
 
-    return True
+    return log
 
 def main_menu_draw():
     global menuAnimation
     backgroundAnimation = pygame.image.load("./Graphics/MenuSplashAnimation/pixil-frame-0.png")
     if menuAnimation >= 0 and menuAnimation <= 15:
         backgroundAnimation = pygame.image.load("./Graphics/MenuSplashAnimation/pixil-frame-{}.png".format(menuAnimation))
-    backgroundAnimation = pygame.transform.scale(backgroundAnimation, (1280, 720))
     imagerect = backgroundAnimation.get_rect()
     win.blit(backgroundAnimation, imagerect)
     menuAnimation +=1
