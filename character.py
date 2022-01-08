@@ -22,27 +22,35 @@ class Character:
 
         return self.weaponStat
 
-    def __toString_(self):
-        string = self.name + "@" + self.health + "@weapons@"
-        for k, v in self.armor:
-            string = string + k + ":" + v + "@"
+    def __toString__(self):
+        string = self.name + "@" + self.health + "@weapons"
+        for k, v in self.weapons.items():
+            string = string + "@" + k + ":" + v
         
-        string += "@armor@"
+        string += "@armor"
 
-        for k, v in self.weapons:
-            string = string + k + ":" + v + "@"
+        for k, v in self.armor.items():
+            string = string + "@" +  k + ":" + v
+
+        return string
 
     def fromString(self, string):
         chara = string.split("@")
         self.name = chara[0]
-        self.self.health = chara[1]
-        i = 3
-        for i in chara:
-            if i != "armor":
+        self.health = chara[1]
+        armorFlag = False
+        for i in chara[3:]:
+            if i == "armor":
+                armorFlag = True
+            elif not armorFlag:
                 item = i.split(":")
                 self.weapons[item[0]] = item[1]
-            else: break
-        
-        for i in chara:
-            item = i.split(":")
-            self.armor[item[0]] = item[1]
+            elif armorFlag:
+                item = i.split(":")
+                self.armor[item[0]] = item[1]
+
+#Testing suite for Character
+#c = Character("")
+#s = "Bumbles@5@weapons@The Icepick:1@armor@Leather Armor:1"
+#c.fromString(s)
+#print(c.__toString__())

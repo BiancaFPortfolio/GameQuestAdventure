@@ -1,6 +1,6 @@
 #Game information
 worlds = ["Green Vale", "Shelly Shore", "The Spire", "Toadstool Bog", "Tiptop Mountain", "Candy Castle"]
-hubs = ["Tom's", "The Fish Market", "Rocky Road Supplies", "Swampy Place", "Snow Is Us", "Candy Shop"]
+shops = ["Tom's", "The Fish Market", "Rocky Road Supplies", "Swampy Place", "Snow Is Us", "Candy Shop"]
 #Combat
 #Decided by dice roll. If dice roll higher than difficulty class, monster dies or takes damage
 #If dice roll is lower than difficulty class, player takes damage
@@ -12,12 +12,24 @@ hubs = ["Tom's", "The Fish Market", "Rocky Road Supplies", "Swampy Place", "Snow
 
 
 class World:
-    def __init__(self, id, name, level, hub):
+    def __init__(self, id, name, level):
         self.id = id
         self.monsterList = []
         self.name = name
         self.level = level
-        self.hub = Hub(self.id, hub)
+        #0 is empty tile
+        self.map = [20*[0]]*20
+
+    def addMonster(self):
+        pass
+
+    def __toString__(self):
+        s = ""
+        for i in range(0, 20):
+            for j in range(0, 20):
+                s += self.map[i][j]
+                if i != 20 and j != 20:
+                    s += "@"
 
 class Monster:
     def __init__(self, id, name, lootLevel, difficultyClass, hp):
@@ -27,16 +39,9 @@ class Monster:
         self.difficultyClass = difficultyClass
         self.hp = hp
 
-class Hub:
-    def __init__(self, id, name):
-        self.id = id
-        self.name = name
-
 class Shop:
-    def __init__(self, id, name, owner, itemList):
+    def __init__(self, id, itemList):
         self.id = id
-        self.name = name
-        self.owner = owner
         self.itemList = itemList
 
 class NPC:
@@ -52,5 +57,5 @@ class Game:
         #Initialize 6 worlds
         self.worldList = []
         for x in worlds:
-            w = World(x, worlds[x], x+1, hubs[x])
+            w = World(x, worlds[x], x+1)
             self.worldList.append()

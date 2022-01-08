@@ -19,6 +19,9 @@ newButton = LoginButton(110, 360, 80, 32, "Create", "new")
 returningButton = LoginButton(210, 360, 80, 32, "Login", "login")
 #Animation counter
 menuAnimation = 0
+#Character positioning
+START_X = 320
+START_Y = 18
 
 def redrawWindow():
     win.fill((255, 255, 255))
@@ -29,7 +32,7 @@ def main():
     clock = pygame.time.Clock()
 
     running = True
-    main_menu_running = False
+    main_menu_running = True
     while running:
         clock.tick(60)
 
@@ -44,7 +47,8 @@ def main():
             else:
                 x = threading.Thread(target = update_board, args = (0,))
                 x.start()
-                update_action(event)
+                update_action(event, "")
+                x.join()
                 
 
 def main_menu(event):
@@ -76,7 +80,7 @@ def main_menu_draw():
     returningButton.draw(win)
     pygame.display.update()
 
-def update_action(event):
+def update_action(event, character):
     #Updates the character sprite and statistics based on the pygame events and sends updates to server
     if event.type == pygame.KEYDOWN:
         #UPGRADE TO 3.10 FOR MATCHES
@@ -94,6 +98,8 @@ def update_action(event):
 
 def update_board(threadID):
     #Will constantly rebuild the board from the data in the server
+    boardState = net.send("board")
+    boardState.split("@")
     b = Board("", win)
     b.draw()
     pygame.display.update()

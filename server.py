@@ -21,6 +21,9 @@ except socket.error as e:
 sock.listen(SERVER_CAP)
 print("Server started.")
 
+#Testing world
+w = World(0, "Candy Castle", 1)
+
 def log(conn):
     conn.send(str.encode("Connected to server."))
     reply = ""
@@ -37,9 +40,13 @@ def log(conn):
                     character = loginVerification.create(loginData[0], loginData[1])
                     print(character)
                     conn.send(str.encode(character))
+                    if character != None:
+                        play(conn, character)
                 elif(loginData[2] == "login"):
                     character = loginVerification.login(loginData[0], loginData[1])
                     conn.send(str.encode(character))
+                    if character != None:
+                        play(conn, character)
         except Exception as e:
             print(e)
             break
@@ -49,6 +56,26 @@ def log(conn):
     print("Player has lost connection.")
     conn.close()
         
+def play(conn, character):
+    try:
+        while True:
+            #Check for poll from client
+            data = conn.recv(RECV_BITS).decode("utf-8")
+            
+            if not data:
+                pass
+            else:
+                #Send game board data to player over conn
+                conn.send(str.encode(w.__toString__()))
+            
+            #Read player action
+            #Update board
+            pass
+    except Exception as e:
+        print("Player has lost connection.")
+        conn.close()
+    pass
+
 
 while True:
     conn, addr = sock.accept()

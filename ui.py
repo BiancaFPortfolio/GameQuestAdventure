@@ -103,7 +103,8 @@ class FreeText:
         win.blit(self.txt_surface, (x, y))
 
 class Board:
-    def __init__(self, world, win):
+    def __init__(self, world, win, boardData):
+        self.boardData = boardData
         self.Tileset = []
         self.world = world
         self.win = win
@@ -111,15 +112,18 @@ class Board:
     def draw(self):
         x = start_X
         y = start_Y
+        #Counter for boardData
+        k = 0
         #For tile, draw tile and monster on tile
         for i in range(0, 20):
             col = []
             for j in range(0, 20):
                 #NEED TO CHANGE 0 ONCE UNITS ARE WORKED ON, pass string into init from server that has enemy and player data per tile
-                t = Tile(x, y, self.world, 0)
+                t = Tile(x, y, self.world, self.boardData[k])
                 col.append(t)
                 t.draw(self.win)
                 x += TILE_XY
+                k+=1
             self.Tileset.append(col)
             y += TILE_XY
             x = start_X
