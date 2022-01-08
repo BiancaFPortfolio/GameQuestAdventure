@@ -11,7 +11,7 @@ font_color = pygame.Color(0, 0, 0) #Black
 active_font_color = pygame.Color(128, 128, 128)
 BOX_PIXEL_GAP_XY = 8
 TILE_XY = 32
-start_X =320
+start_X = 320
 start_Y = 18
 
 class LoginButton:
@@ -36,10 +36,9 @@ class LoginButton:
                 #Convert to string and send to server with indication of whether or not this is a new user
                 sendString = user + "@" + password + "@" + self.type
                 character = net.send(sendString)
-                if character != None:
-                    return False
+                return character
         
-        return True
+        return None
         
 
     def draw(self, win):
@@ -119,7 +118,7 @@ class Board:
                 #NEED TO CHANGE 0 ONCE UNITS ARE WORKED ON, pass string into init from server that has enemy and player data per tile
                 t = Tile(x, y, self.world, 0)
                 col.append(t)
-                t.draw(win)
+                t.draw(self.win)
                 x += TILE_XY
             self.Tileset.append(col)
             y += TILE_XY
@@ -128,13 +127,14 @@ class Board:
         #Print shop
         t = Tile(start_X, 720-92, "shop", 0)
         self.Tileset[0][19]
-        t.draw(win)
+        t.draw(self.win)
 
 class Tile:
     def __init__(self, x, y, world, unit):
         self.rect = pygame.Rect(x, y, TILE_XY, TILE_XY)
         if world == "shop":
             self.image = pygame.image.load("./Graphics/Sprites/shop.png")
+        #Will need changed to elifs for other sprites OR UPGRADE TO PYTHON 3.10 FOR MATCHES
         else:
             self.image = pygame.image.load("./Graphics/Sprites/CandyTile.png")
         #USE TO PICK TILESET TO PRINT LATER

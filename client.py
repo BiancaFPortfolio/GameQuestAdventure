@@ -1,6 +1,7 @@
 import pygame
 from network import Network
 from ui import *
+import threading
 
 clientNum = 0
 
@@ -28,7 +29,7 @@ def main():
     clock = pygame.time.Clock()
 
     running = True
-    main_menu_running = True
+    main_menu_running = False
     while running:
         clock.tick(60)
 
@@ -37,21 +38,25 @@ def main():
                 running = False
                 pygame.quit()
             if main_menu_running:
-                main_menu_running = main_menu(event)
+                chara = main_menu(event)
+                if chara != None:
+                    main_menu_running = False
             else:
-                redrawWindow()
+                x = threading.Thread(target = update_board, args = (0,))
+                x.start()
+                update_action(event)
+                
 
 def main_menu(event):
     #User authentication UI
     #Send String to server in the form "username:password"
-    #Password will then be converted to hash and the corresponding Player will be returned and gameplay may commence
+    #Password will then be converted to hash and the corresponding character will be returned and gameplay may commence
     main_menu_draw()
-    #INSTEAD OF HAVING TWO SETS OF FIELDS, JUST HAVE TWO BUTTONS AND NO ENTER EFFECT
     userField.handle_event(event)
     passField.handle_event(event)
     #Will stop main_menu_running if user successfully logs in
     log = newButton.handle_event(event, userField.text, passField.text, net)
-    if not log:
+    if log == None:
         log = returningButton.handle_event(event, userField.text, passField.text, net)
     main_menu_draw()
 
@@ -64,11 +69,33 @@ def main_menu_draw():
         backgroundAnimation = pygame.image.load("./Graphics/MenuSplashAnimation/pixil-frame-{}.png".format(menuAnimation))
     imagerect = backgroundAnimation.get_rect()
     win.blit(backgroundAnimation, imagerect)
-    menuAnimation +=1
+    menuAnimation += 1
     userField.draw(win)
     passField.draw(win)
     newButton.draw(win)
     returningButton.draw(win)
+    pygame.display.update()
+
+def update_action(event):
+    #Updates the character sprite and statistics based on the pygame events and sends updates to server
+    if event.type == pygame.KEYDOWN:
+        #UPGRADE TO 3.10 FOR MATCHES
+        #Directional
+        if event.key == pygame.KEY_W:
+            pass
+        elif event.key == pygame.KEY_S:
+            pass
+        elif event.key == pygame.KEY_A:
+            pass
+        elif event.key == pygame.KEY_D:
+            pass
+
+    pass
+
+def update_board(threadID):
+    #Will constantly rebuild the board from the data in the server
+    b = Board("", win)
+    b.draw()
     pygame.display.update()
 
 if __name__ == "__main__":
