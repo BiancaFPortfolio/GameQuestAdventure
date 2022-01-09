@@ -59,6 +59,9 @@ def log(conn):
     conn.close()
         
 def play(conn, character):
+    w.addPlayer(character)
+    x = 0
+    y = 0
     while True:
         try:
             #Check for poll from client
@@ -67,16 +70,20 @@ def play(conn, character):
             if not data:
                 pass
             else:
-                #Send game board data to player over conn
-                conn.send(str.encode(w.__toString__()))
-            
+                if data == "board":
+                    #Send game board data to player over conn
+                    conn.send(str.encode(w.__toString__()))
+                else:
+                    #Data will be command from Player
+                    pass
             #Read player action
             #Update board
             w.addMonster()
-            print(w.__toString__())
         except Exception as e:
             print(e)
             break
+    
+    print("Player has lost connection.")
     conn.close()
 
 

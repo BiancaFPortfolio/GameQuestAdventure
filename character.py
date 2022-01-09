@@ -22,6 +22,12 @@ class Character:
 
         return self.weaponStat
 
+    def __eq__(self, chara):
+        #Names are unique, can use to quickly compare
+        if chara.name == self.name:
+            return True
+        return False
+
     def __toString__(self):
         string = self.name + "@" + self.health + "@weapons"
         for k, v in self.weapons.items():

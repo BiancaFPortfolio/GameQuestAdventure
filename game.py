@@ -1,4 +1,5 @@
 import random
+from character import *
 #Game information
 worlds = ["Green Vale", "Shelly Shore", "The Spire", "Toadstool Bog", "Tiptop Mountain", "Candy Castle"]
 shops = ["Tom's", "The Fish Market", "Rocky Road Supplies", "Swampy Place", "Snow Is Us", "Candy Shop"]
@@ -40,12 +41,45 @@ class World:
                     self.monsterCount += 1
                     break
 
+    def addPlayer(self, character):
+        #Player will always spawn at 0, 0 on the first world when they login. Map is small, so this is a nonissue
+        if self.map[0][0] == 0:
+            self.map[0][0] = []
+        self.map[0][0].append(character)
 
-    def __toString__(self):
+    def movePlayer(self, character, x, y, prevX, prevY):
+        oldTile = self.map[prevX][prevY]
+        for i in oldTile:
+            if character.__eq__(i):
+                oldTile.remove(character)
+        
+        if self.map[x][y] == 0:
+            self.map[x][y] = []
+        self.map[x][y].append(character)
+            
+
+        pass
+
+    def __toString__(self, character):
+        #Server will now pass in character, this will match on every character token in the map and add 1 to the string instead of 2 if the character matches this one
         s = ""
         for i in range(0, 20):
             for j in range(0, 20):
-                s += str(self.map[i][j])
+                if self.map[i][j] == 0:
+                    s += "0"
+                elif self.map[i][j] == 3:
+                    #CHANGE THIS TO MONSTER OBJ LATER
+                    s += "3"
+                elif isinstance(self.map[i][j], list):
+                    isChara = False
+                    for k in self.map[i][j]:
+                        if character.__eq__(k):
+                            isChara = True
+                    if isChara:
+                        s += "1"
+                    else:
+                        s += "2"
+
                 if i != 20 and j != 20:
                     s += "@"
         

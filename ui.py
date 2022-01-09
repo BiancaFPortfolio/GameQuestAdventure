@@ -1,6 +1,5 @@
 import pygame
 from network import Network
-import json
 
 pygame.init()
 #UI constants
