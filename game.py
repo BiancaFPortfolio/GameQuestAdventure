@@ -31,8 +31,8 @@ class World:
             if rollIf > 1:
                 break
             else:
-                rollX = random.randint(1, 19)
-                rollY = random.randint(1, 19)
+                rollX = random.randint(2, 18)
+                rollY = random.randint(2, 18)
                 if self.map[rollX][rollY] == 0:
                     #Roll for random monster from world's monster list
                     #FOR NOW ONLY ONE MONSTER SO JUST 3
@@ -52,13 +52,13 @@ class World:
         for i in oldTile:
             if character.__eq__(i):
                 oldTile.remove(character)
-        
+            #Empty lists are False in python
+            if not oldTile:
+                self.map[prevX][prevY] = 0
+                
         if self.map[x][y] == 0:
             self.map[x][y] = []
         self.map[x][y].append(character)
-            
-
-        pass
 
     def __toString__(self, character):
         #Server will now pass in character, this will match on every character token in the map and add 1 to the string instead of 2 if the character matches this one
@@ -92,6 +92,9 @@ class Monster:
         self.lootLevel = lootLevel
         self.difficultyClass = difficultyClass
         self.hp = hp
+
+    def __toString__(self):
+        return str(id) + ":" + self.name + str(self.lootLevel) + ":" + str(self.difficultyClass) + ":" + str(self.hp)
 
 class Shop:
     def __init__(self, id, itemList):

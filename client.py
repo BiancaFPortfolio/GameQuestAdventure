@@ -61,7 +61,8 @@ def main():
             else:
                 x = threading.Thread(target = update_board, args = (b, ))
                 x.start()
-                update_action(event, "")
+                update_action(event)
+                pygame.display.update()
                 x.join()
                 
 
@@ -90,19 +91,18 @@ def main_menu_draw():
     returningButton.draw(win)
     pygame.display.update()
 
-def update_action(event, character):
-    #Updates the character sprite and statistics based on the pygame events and sends updates to server
+def update_action(event):
     if event.type == pygame.KEYDOWN:
         #UPGRADE TO 3.10 FOR MATCHES
         #Directional
-        if event.key == pygame.KEY_W:
-            pass
-        elif event.key == pygame.KEY_S:
-            pass
-        elif event.key == pygame.KEY_A:
-            pass
-        elif event.key == pygame.KEY_D:
-            pass
+        if event.key == pygame.K_w:
+            net.send("w")
+        elif event.key == pygame.K_s:
+            net.send("s")
+        elif event.key == pygame.K_a:
+            net.send("a")
+        elif event.key == pygame.K_d:
+            net.send("d")
 
     pass
 

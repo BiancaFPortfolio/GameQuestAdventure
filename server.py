@@ -72,11 +72,27 @@ def play(conn, character):
             else:
                 if data == "board":
                     #Send game board data to player over conn
-                    conn.send(str.encode(w.__toString__()))
+                    conn.send(str.encode(w.__toString__(character)))
                 else:
                     #Data will be command from Player
-                    pass
-            #Read player action
+                    if data == "d" and y < 19:
+                        if w.map[x][y+1] == 0 or isinstance(w.map[x][y+1], list):
+                            w.movePlayer(character, x, y+1, x, y)
+                            y += 1
+                    elif data == "a" and y > 0:
+                        if w.map[x][y-1] == 0 or isinstance(w.map[x][y-1], list):
+                            w.movePlayer(character, x, y-1, x, y)
+                            y -= 1
+                    elif data == "w" and x > 0:
+                        if w.map[x-1][y] == 0 or isinstance(w.map[x-1][y], list):
+                            w.movePlayer(character, x-1, y, x, y)
+                            x -= 1
+                    elif data == "s" and x < 19:
+                        if w.map[x+1][y] == 0 or isinstance(w.map[x+1][y], list):
+                            w.movePlayer(character, x+1, y, x, y)
+                            x += 1
+                    conn.send(str.encode(w.__toString__(character)))
+            
             #Update board
             w.addMonster()
         except Exception as e:

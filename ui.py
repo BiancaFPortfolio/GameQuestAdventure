@@ -143,6 +143,8 @@ class Board:
             for j in range(0, 20):
                 if self.boardData[k] != "0":
                     self.Tileset[i][j].unitFill(self.win, self.boardData[k])
+                else:
+                    self.Tileset[i][j].unitErase(self.win)
                 k += 1
 
 class Tile:
@@ -172,6 +174,12 @@ class Tile:
         self.unit = unit
         self.entity = self.Entity(self.rect, self.unit)
         self.entity.draw(win)
+
+    def unitErase(self, win):
+        if self.unit != "0":
+            self.unit = "0"
+            self.entity = None
+            self.draw(win)
 
     class Entity:
         #Takes unit and converts it to a printable Monster/Player on top of the Tile
