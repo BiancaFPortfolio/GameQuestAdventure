@@ -36,17 +36,21 @@ def log(conn):
             else:
                 #String split data
                 loginData = data.split("@", 3)
-                if(loginData[2] == "new"):
-                    character = loginVerification.create(loginData[0], loginData[1])
-                    conn.send(str.encode(character))
-                    print(character)
-                    if character != None:
-                        play(conn, character)
-                elif(loginData[2] == "login"):
-                    character = loginVerification.login(loginData[0], loginData[1])
-                    conn.send(str.encode(character))
-                    if character != None:
-                        play(conn, character)
+                try:
+                    if(loginData[2] == "new"):
+                        character = loginVerification.create(loginData[0], loginData[1])
+                        conn.send(str.encode(character))
+                        print(character)
+                        if character != None:
+                            play(conn, character)
+                    elif(loginData[2] == "login"):
+                        character = loginVerification.login(loginData[0], loginData[1])
+                        conn.send(str.encode(character))
+                        if character != None:
+                            play(conn, character)
+                except:
+                    #Send string indicating login failure
+                    pass
         except Exception as e:
             print(e)
             break
@@ -68,7 +72,8 @@ def play(conn, character):
             
             #Read player action
             #Update board
-            pass
+            w.addMonster()
+            print(w.__toString__())
         except Exception as e:
             print(e)
             break

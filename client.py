@@ -22,6 +22,8 @@ menuAnimation = 0
 #Character positioning
 START_X = 320
 START_Y = 18
+#Board 
+b = None
 
 def redrawWindow():
     win.fill((0, 0, 0))
@@ -29,6 +31,7 @@ def redrawWindow():
 
 
 def main():
+    global b
     clock = pygame.time.Clock()
 
     running = True
@@ -37,8 +40,7 @@ def main():
     backgroundAnimation = pygame.image.load("./Graphics/MenuSplashAnimation/pixil-frame-0.png")
     imagerect = backgroundAnimation.get_rect()
     win.blit(backgroundAnimation, imagerect)
-    #Board 
-    b = None
+    
     pygame.display.update()
     while running:
         clock.tick(100)
@@ -55,9 +57,9 @@ def main():
                 if chara != None:
                     chara.decode()
                     main_menu_running = False
-                    b = create_board()
+                    create_board()
             else:
-                x = threading.Thread(target = update_board, args = (b))
+                x = threading.Thread(target = update_board, args = (b, ))
                 x.start()
                 update_action(event, "")
                 x.join()
@@ -105,6 +107,7 @@ def update_action(event, character):
     pass
 
 def create_board():
+    global b
     #Will constantly rebuild the board from the data in the server
     redrawWindow()
     try:
@@ -113,7 +116,6 @@ def create_board():
         b = Board("", win, board)
         b.draw()
         pygame.display.update()
-        return b
     except Exception as e:
         print(e)
     
@@ -122,6 +124,7 @@ def update_board(b):
         boardState = net.send("board").decode()
         board = boardState.split("@")
         b.update(board)
+        pygame.display.update()
     except Exception as e:
         print(e)
 

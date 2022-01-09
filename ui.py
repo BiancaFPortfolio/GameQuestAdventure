@@ -129,7 +129,7 @@ class Board:
             x = start_X
         
         #Print shop
-        t = Tile(start_X, 720-92, "shop", 0)
+        t = Tile(start_X, 720-92, "shop", "0")
         self.Tileset[0][19]
         t.draw(self.win)
 
@@ -166,27 +166,29 @@ class Tile:
         win.blit(self.image, self.rect)
         #Append if statement for if unit != 0, unitFill
         if self.unit != "0":
-            self.unitFill(self.unit)
+            self.unitFill(win, self.unit)
 
     def unitFill(self, win, unit):
         #Fills a tile with a Monster or Player and draws the Monster/Player
         self.unit = unit
-        self.entity = self.Entity(self.rect)
+        self.entity = self.Entity(self.rect, self.unit)
         self.entity.draw(win)
 
     class Entity:
         #Takes unit and converts it to a printable Monster/Player on top of the Tile
-        def __init__(self, rect):
+        def __init__(self, rect, unit):
             self.rect = rect
+            self.unit = unit
+            self.image = None
             #ANOTHER GOOD AREA FOR MATCH CASE AFTER YOU UPDATE TO 3.10
             #ALSO ONCE MORE ENEMY DETAILS ARE MADE, STRING WILL BE SPLIT WITH : FOR UNIT STATS
             if self.unit == "1":
                 #Client Player
                 self.image = pygame.image.load("./Graphics/Sprites/Player.png")
             elif self.unit == "2":
-                self.image = pygame.image.load("./Graphics/Sprites/OtherPlayer.png")
                 #Other Player
-            elif self.unit == "3":
+                self.image = pygame.image.load("./Graphics/Sprites/OtherPlayer.png")
+            else:
                 #Green Slime
                 self.image = pygame.image.load("./Graphics/Sprites/GreenSlime.png")
 
