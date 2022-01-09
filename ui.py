@@ -133,24 +133,65 @@ class Board:
         self.Tileset[0][19]
         t.draw(self.win)
 
+    def update(self, boardData):
+        #Function to just draw the monster and player updates without redrawing the whole board
+        #Will naively do this simply by drawing only the monsters and players with this function,
+        #But will revisit, performance depending, and consider adding a marker for entities changing states
+        self.boardData = boardData
+        k = 0
+
+        for i in range(0, 20):
+            for j in range(0, 20):
+                if self.boardData[k] != "0":
+                    self.Tileset[i][j].unitFill(self.win, self.boardData[k])
+                k += 1
+
 class Tile:
     def __init__(self, x, y, world, unit):
         self.rect = pygame.Rect(x, y, TILE_XY, TILE_XY)
-        if world == "shop":
+        self.world = world
+        #String representation of enemy/player
+        self.unit = unit
+        #Object representation of enemy/player
+        self.entity = None
+        if self.world == "shop":
             self.image = pygame.image.load("./Graphics/Sprites/shop.png")
         #Will need changed to elifs for other sprites OR UPGRADE TO PYTHON 3.10 FOR MATCHES
         else:
             self.image = pygame.image.load("./Graphics/Sprites/CandyTile.png")
         #USE TO PICK TILESET TO PRINT LATER
-        self.world = world
-        self.unit = unit
-        pass
+        
 
     def draw(self, win):
         win.blit(self.image, self.rect)
+        #Append if statement for if unit != 0, unitFill
+        if self.unit != "0":
+            self.unitFill(self.unit)
 
-    def unitFill(self, unit):
-        pass
+    def unitFill(self, win, unit):
+        #Fills a tile with a Monster or Player and draws the Monster/Player
+        self.unit = unit
+        self.entity = self.Entity(self.rect)
+        self.entity.draw(win)
+
+    class Entity:
+        #Takes unit and converts it to a printable Monster/Player on top of the Tile
+        def __init__(self, rect):
+            self.rect = rect
+            #ANOTHER GOOD AREA FOR MATCH CASE AFTER YOU UPDATE TO 3.10
+            #ALSO ONCE MORE ENEMY DETAILS ARE MADE, STRING WILL BE SPLIT WITH : FOR UNIT STATS
+            if self.unit == "1":
+                #Client Player
+                self.image = pygame.image.load("./Graphics/Sprites/Player.png")
+            elif self.unit == "2":
+                self.image = pygame.image.load("./Graphics/Sprites/OtherPlayer.png")
+                #Other Player
+            elif self.unit == "3":
+                #Green Slime
+                self.image = pygame.image.load("./Graphics/Sprites/GreenSlime.png")
+
+        def draw(self, win):
+            win.blit(self.image, self.rect)
 
 #Testing suite for game board
 #clock = pygame.time.Clock()

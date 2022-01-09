@@ -37,6 +37,8 @@ def main():
     backgroundAnimation = pygame.image.load("./Graphics/MenuSplashAnimation/pixil-frame-0.png")
     imagerect = backgroundAnimation.get_rect()
     win.blit(backgroundAnimation, imagerect)
+    #Board 
+    b = None
     pygame.display.update()
     while running:
         clock.tick(100)
@@ -53,8 +55,9 @@ def main():
                 if chara != None:
                     chara.decode()
                     main_menu_running = False
+                    b = create_board()
             else:
-                x = threading.Thread(target = update_board, args = (0,))
+                x = threading.Thread(target = update_board, args = (b))
                 x.start()
                 update_action(event, "")
                 x.join()
@@ -101,18 +104,26 @@ def update_action(event, character):
 
     pass
 
-def update_board(threadID):
+def create_board():
     #Will constantly rebuild the board from the data in the server
     redrawWindow()
-    while True:
-        try:
-            boardState = net.send("board").decode()
-            board = boardState.split("@")
-            b = Board("", win, board)
-            b.draw()
-            pygame.display.update()
-        except Exception as e:
-            print(e)
+    try:
+        boardState = net.send("board").decode()
+        board = boardState.split("@")
+        b = Board("", win, board)
+        b.draw()
+        pygame.display.update()
+        return b
+    except Exception as e:
+        print(e)
+    
+def update_board(b):
+    try:
+        boardState = net.send("board").decode()
+        board = boardState.split("@")
+        b.update(board)
+    except Exception as e:
+        print(e)
 
 if __name__ == "__main__":
     main()

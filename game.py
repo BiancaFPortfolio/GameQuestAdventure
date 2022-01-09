@@ -10,7 +10,6 @@ shops = ["Tom's", "The Fish Market", "Rocky Road Supplies", "Swampy Place", "Sno
 #Dice
 #2d10 are rolled every combat turn
 
-
 class World:
     def __init__(self, id, name, level):
         self.id = id
@@ -21,6 +20,11 @@ class World:
         self.map = [20*[0]]*20
 
     def addMonster(self):
+        #Roll for random tile until find empty tile
+        #Roll for random monster from world's monster list
+        #self.map[i][j] = monster id
+        #As client builds map, Tiles will plug in monster id and get appropriate sprite
+        #0 = empty tile, 1 = client player, 2 = other player, so 3 and greater are valid monster ids
         pass
 
     def __toString__(self):
