@@ -13,6 +13,20 @@ TILE_XY = 32
 start_X = 320
 start_Y = 18
 
+class CharacterInterface:
+    def __init__(self, x, y, w, h, character):
+        self.rect = pygame.Rect(x, y, w, h)
+        self.character = character.split("@")
+        self.font = font
+        self.bgcolor = active_color
+        self.font_color = pygame.Color(255, 255, 255)
+        #Character name
+        #Health
+        #
+
+    def draw(self, win):
+        pass
+
 class LoginButton:
     def __init__(self, x, y, w, h, text, ty):
         #Border
@@ -129,7 +143,7 @@ class Board:
         
         #Print shop
         t = Tile(start_X, 720-92, "shop", "0")
-        self.Tileset[0][19]
+        self.Tileset[19][0] = t
         t.draw(self.win)
 
     def update(self, boardData):
@@ -146,6 +160,10 @@ class Board:
                 else:
                     self.Tileset[i][j].unitErase(self.win)
                 k += 1
+        #Shop
+        t = Tile(start_X, 720-92, "shop", "0")
+        self.Tileset[19][0] = t
+        t.draw(self.win)
 
 class Tile:
     def __init__(self, x, y, world, unit):

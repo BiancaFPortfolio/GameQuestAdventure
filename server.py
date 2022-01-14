@@ -92,7 +92,9 @@ def play(conn, character):
                             w.movePlayer(character, x+1, y, x, y)
                             x += 1
                     conn.send(str.encode(w.__toString__(character)))
-            
+                print(x)
+                print(y)
+                print(w.__toString__(character))
             #Update board
             w.addMonster()
         except Exception as e:
