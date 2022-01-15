@@ -103,8 +103,6 @@ def play(conn, character):
                         if w.map[x+1][y] == 0 or isinstance(w.map[x+1][y], list):
                             w.movePlayer(character, x+1, y, x, y)
                             x += 1
-                    print(x)
-                    print(y)
                     conn.send(str.encode(w.__toString__(character)))
                 print(w.__toString__(character))
             #Update board

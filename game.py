@@ -93,7 +93,7 @@ class Monster:
         self.hp = hp
 
     def __toString__(self):
-        string = str(self.id) + ":" + self.name + str(self.lootLevel) + ":" + str(self.difficultyClass) + ":" + str(self.hp)
+        string = str(self.id) + ":" + self.name + ":" + str(self.lootLevel) + ":" + str(self.difficultyClass) + ":" + str(self.hp)
         return string
 
 class Shop:

@@ -19,15 +19,33 @@ class MonsterInterface:
         self.font = font
         self.bg_color = active_color
         self.font_color = pygame.Color(255, 255, 255)
-        self.mon = monster.split(":")
-        self.name = self.mon[1]
-        self.lootLevel = self.mon[2]
-        self.difficultyClass = self.mon[3]
-        self.hp = self.mon[4]
-        pass
+        try:
+            self.mon = monster.split(":")
+            self.name = self.mon[1]
+            self.lootLevel = "Loot level: " + self.mon[2]
+            self.difficultyClass = "DC: +" + self.mon[3]
+            self.hp = "HP: " + self.mon[4]
+        except:
+            self.mon = ""
+            self.name = ""
+            self.lootLevel = ""
+            self.difficultyClass = ""
+            self.hp = ""
+
+        #Text
+        self.nameText = font.render(self.name, True, self.font_color)
+        self.HPText = font.render(self.hp, True, self.font_color)
+        self.dcText = font.render(self.difficultyClass, True, self.font_color)
+        self.lootText = font.render(self.lootLevel, True, self.font_color)
 
     def draw(self, win):
-        pass
+        pygame.draw.rect(win, self.bg_color, self.rect)
+        if self.mon != "":
+            win.blit(self.nameText, (self.rect.x+BOX_PIXEL_GAP_XY, self.rect.y+20))
+            win.blit(self.HPText, (self.rect.x+BOX_PIXEL_GAP_XY, self.rect.y+50))
+            win.blit(self.dcText, (self.rect.x+BOX_PIXEL_GAP_XY, self.rect.y+80))
+            win.blit(self.lootText, (self.rect.x+BOX_PIXEL_GAP_XY, self.rect.y+110))
+
 
 class CharacterInterface:
     def __init__(self, x, y, w, h, character):
