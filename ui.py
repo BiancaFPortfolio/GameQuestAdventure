@@ -21,11 +21,25 @@ class CharacterInterface:
         self.bgcolor = active_color
         self.font_color = pygame.Color(255, 255, 255)
         #Character name
+        self.name = self.character[0]
         #Health
-        #
+        self.health = "HP: " + self.character[1]
+        #Arnor bonus
+        self.armorBonus = "Armor: +" + self.character[2]
+        #Weapon bonus
+        self.weaponBonus = "Weapon: +" + self.character[3]
+        #Text
+        self.nameText = font.render(self.name, True, self.font_color)
+        self.HPText = font.render(self.health, True, self.font_color)
+        self.ArmorText = font.render(self.armorBonus, True, self.font_color)
+        self.WeaponText = font.render(self.weaponBonus, True, self.font_color)
 
     def draw(self, win):
-        pass
+        pygame.draw.rect(win, self.bgcolor, self.rect)
+        win.blit(self.nameText, (self.rect.x+BOX_PIXEL_GAP_XY, self.rect.y+20))
+        win.blit(self.HPText, (self.rect.x+BOX_PIXEL_GAP_XY, self.rect.y+50))
+        win.blit(self.ArmorText, (self.rect.x+BOX_PIXEL_GAP_XY, self.rect.y+80))
+        win.blit(self.WeaponText, (self.rect.x+BOX_PIXEL_GAP_XY, self.rect.y+110))
 
 class LoginButton:
     def __init__(self, x, y, w, h, text, ty):

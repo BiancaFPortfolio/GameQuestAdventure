@@ -73,6 +73,8 @@ def play(conn, character):
                 if data == "board":
                     #Send game board data to player over conn
                     conn.send(str.encode(w.__toString__(character)))
+                elif data == "character":
+                    conn.send(str.encode(character))
                 else:
                     #Data will be command from Player
                     if data == "d" and y < 19:

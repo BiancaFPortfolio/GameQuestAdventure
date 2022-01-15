@@ -29,7 +29,7 @@ class Character:
         return False
 
     def __toString__(self):
-        string = self.name + "@" + self.health + "@weapons"
+        string = self.name + "@" + self.health + "@" + self.getArmorStat() + "@" + self.getWeaponStat() + "@weapons" 
         for k, v in self.weapons.items():
             string = string + "@" + k + ":" + v
         
@@ -45,7 +45,7 @@ class Character:
         self.name = chara[0]
         self.health = chara[1]
         armorFlag = False
-        for i in chara[3:]:
+        for i in chara[5:]:
             if i == "armor":
                 armorFlag = True
             elif not armorFlag:

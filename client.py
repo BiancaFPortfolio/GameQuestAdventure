@@ -59,6 +59,10 @@ def main():
                     main_menu_running = False
                     create_board()
             else:
+                #Poll server for updated character information
+                chara = net.send("character").decode()
+                character_stats(chara)
+                #Update build of board on thread because costly
                 x = threading.Thread(target = update_board, args = (b, ))
                 x.start()
                 update_action(event)
@@ -127,6 +131,11 @@ def update_board(b):
         pygame.display.update()
     except Exception as e:
         print(e)
+
+def character_stats(character):
+    chara = CharacterInterface(20, 20, 240, 680, character)
+    chara.draw(win)
+    pygame.display.update()
 
 if __name__ == "__main__":
     main()
