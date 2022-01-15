@@ -37,7 +37,7 @@ class World:
                     #Roll for random monster from world's monster list
                     #FOR NOW ONLY ONE MONSTER SO JUST 3
                     #ALSO CHANGE TO INCLUDE STATS LATER
-                    self.map[rollX][rollY] = 3
+                    self.map[rollX][rollY] = Monster(3, "Green Slime", 1, 2, 2)
                     self.monsterCount += 1
                     break
 
@@ -67,9 +67,8 @@ class World:
             for j in range(0, 20):
                 if self.map[i][j] == 0:
                     s += "0"
-                elif self.map[i][j] == 3:
-                    #CHANGE THIS TO MONSTER OBJ LATER
-                    s += "3"
+                elif isinstance(self.map[i][j], Monster):
+                    s += self.map[i][j].__toString__()
                 elif isinstance(self.map[i][j], list):
                     isChara = False
                     for k in self.map[i][j]:
