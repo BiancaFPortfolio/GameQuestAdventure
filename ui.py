@@ -13,6 +13,22 @@ TILE_XY = 32
 start_X = 320
 start_Y = 18
 
+class MonsterInterface:
+    def __init__(self, x, y, w, h, monster):
+        self.rect = pygame.Rect(x, y, w, h)
+        self.font = font
+        self.bg_color = active_color
+        self.font_color = pygame.Color(255, 255, 255)
+        self.mon = monster.split(":")
+        self.name = self.mon[1]
+        self.lootLevel = self.mon[2]
+        self.difficultyClass = self.mon[3]
+        self.hp = self.mon[4]
+        pass
+
+    def draw(self, win):
+        pass
+
 class CharacterInterface:
     def __init__(self, x, y, w, h, character):
         self.rect = pygame.Rect(x, y, w, h)

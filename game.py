@@ -19,7 +19,7 @@ class World:
         self.name = name
         self.level = level
         #0 is empty tile
-        self.map = [[0 for i in range(20)] for j in range(20)]
+        self.map = [[0 for i in range(21)] for j in range(21)]
         self.monsterCount = 0
         self.monsterCap = 20
 
@@ -93,7 +93,8 @@ class Monster:
         self.hp = hp
 
     def __toString__(self):
-        return str(id) + ":" + self.name + str(self.lootLevel) + ":" + str(self.difficultyClass) + ":" + str(self.hp)
+        string = str(self.id) + ":" + self.name + str(self.lootLevel) + ":" + str(self.difficultyClass) + ":" + str(self.hp)
+        return string
 
 class Shop:
     def __init__(self, id, itemList):

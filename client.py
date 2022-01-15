@@ -61,7 +61,11 @@ def main():
             else:
                 #Poll server for updated character information
                 chara = net.send("character").decode()
-                character_stats(chara)
+                print(chara)
+                chara = chara.split("=")
+                character_stats(chara[0])
+                #Poll server for monster stats of nearby monster
+                monster_stats(chara[1])
                 #Update build of board on thread because costly
                 x = threading.Thread(target = update_board, args = (b, ))
                 x.start()
@@ -136,6 +140,9 @@ def character_stats(character):
     chara = CharacterInterface(20, 20, 240, 680, character)
     chara.draw(win)
     pygame.display.update()
+
+def monster_stats(monster):
+    pass
 
 if __name__ == "__main__":
     main()

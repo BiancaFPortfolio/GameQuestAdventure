@@ -74,7 +74,17 @@ def play(conn, character):
                     #Send game board data to player over conn
                     conn.send(str.encode(w.__toString__(character)))
                 elif data == "character":
-                    conn.send(str.encode(character))
+                    mon = ""
+                    #Will go clockwise from y+1 to x-1
+                    if isinstance(w.map[x][y+1], Monster):
+                        mon = w.map[x][y+1].__toString__()
+                    elif isinstance(w.map[x+1][y], Monster):
+                        mon = w.map[x+1][y].__toString__()
+                    elif isinstance(w.map[x][y-1], Monster):
+                        mon = w.map[x][y-1].__toString__()
+                    elif isinstance(w.map[x-1][y], Monster):
+                        mon = w.map[x-1][y].__toString__()
+                    conn.send(str.encode(character + "=" + mon))
                 else:
                     #Data will be command from Player
                     if data == "d" and y < 19:
@@ -93,9 +103,9 @@ def play(conn, character):
                         if w.map[x+1][y] == 0 or isinstance(w.map[x+1][y], list):
                             w.movePlayer(character, x+1, y, x, y)
                             x += 1
+                    print(x)
+                    print(y)
                     conn.send(str.encode(w.__toString__(character)))
-                print(x)
-                print(y)
                 print(w.__toString__(character))
             #Update board
             w.addMonster()
