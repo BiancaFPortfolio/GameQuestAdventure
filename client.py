@@ -64,7 +64,6 @@ def main():
                 chara = chara.split("=")
                 character_stats(chara[0])
                 #Poll server for monster stats of nearby monster
-                print(chara[1])
                 monster_stats(chara[1])
                 #Update build of board on thread because costly
                 x = threading.Thread(target = update_board, args = (b, ))
@@ -111,8 +110,8 @@ def update_action(event):
             net.send("a")
         elif event.key == pygame.K_d:
             net.send("d")
-
-    pass
+        elif event.key == pygame.K_f:
+            net.send("f")
 
 def create_board():
     global b
