@@ -65,6 +65,7 @@ def play(conn, character):
     x = 0
     y = 0
     monsterTarget = None
+    mon = ""
     characterSheet = Character("")
     characterSheet.fromString(character)
     while True:
@@ -102,18 +103,23 @@ def play(conn, character):
                         #Establish dice threshold that player's roll has to surpass for a successful attack
                         dc = BASE_DC + int(monsterTarget.difficultyClass)
                         #Take Character object from map
-                        chara = w.map[x][y]
-                        #Roll with roll function on Character
-                        roll = chara.roll()
-                        if roll >= dc:
-                            monsterTarget.hp -= 1
-                            if monsterTarget.hp == 0:
-                                #remove from map
-                                pass
-                        else:
-                            #Deduct health from Character
-                            chara.health -= 1
-                            pass
+                        for i in w.map[x][y]:
+                            if i.__eq__(characterSheet):
+                                roll = i.roll()
+                                #Roll with roll function on Character
+                                if roll >= dc:
+                                    monsterTarget.hp -= 1
+                                    if monsterTarget.hp == 0:
+                                        #remove from map
+                                        pass
+                                else:
+                                    #Deduct health from Character
+                                    i.health -= 1
+                                    if i.health == 0:
+                                        i.health = i.getArmorStat()+3
+                                        w.movePlayer(i, 0, 0, x, y)
+                                        x = 0
+                                        y = 0
                 else:
                     #Data will be command from Player
                     if data == "d" and y < 19:
