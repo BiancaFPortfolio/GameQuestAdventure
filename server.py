@@ -104,8 +104,10 @@ def play(conn, character):
                         dc = BASE_DC + int(monsterTarget.difficultyClass)
                         #Take Character object from map
                         for i in w.map[x][y]:
-                            if i.__eq__(characterSheet):
-                                roll = i.roll()
+                            ch = Character("")
+                            ch.fromString(i)
+                            if ch.__eq__(characterSheet):
+                                roll = ch.roll()
                                 #Roll with roll function on Character
                                 if roll >= dc:
                                     monsterTarget.hp -= 1
@@ -114,12 +116,19 @@ def play(conn, character):
                                         pass
                                 else:
                                     #Deduct health from Character
-                                    i.health -= 1
-                                    if i.health == 0:
-                                        i.health = i.getArmorStat()+3
-                                        w.movePlayer(i, 0, 0, x, y)
+                                    ch.health -= 1
+                                    w.map[x][y].remove(i)
+                                    if ch.health == 0:
+                                        ch.health = ch.getArmorStat()+3
+                                        character = ch.__toString__()
+                                        w.movePlayer(character, 0, 0, x, y)
                                         x = 0
                                         y = 0
+                                        characterSheet = ch
+                                    else:
+                                        character = ch.__toString__()
+                                        print(character)
+                                        w.map[x][y].append(character)
                 else:
                     #Data will be command from Player
                     if data == "d" and y < 19:
@@ -140,7 +149,6 @@ def play(conn, character):
                             x += 1
                         pass
                     conn.send(str.encode(w.__toString__(character)))
-                print(w.__toString__(character))
             #Update board
             w.addMonster()
         except Exception as e:
