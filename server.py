@@ -1,4 +1,5 @@
 from _thread import *
+from re import X
 import socket
 import pygame
 from game import *
@@ -68,6 +69,8 @@ def play(conn, character):
     mon = ""
     characterSheet = Character("")
     characterSheet.fromString(character)
+    targetX = 0
+    targetY = 0
     while True:
         try:
             #Check for poll from client
@@ -80,21 +83,32 @@ def play(conn, character):
                     #Send game board data to player over conn
                     conn.send(str.encode(w.__toString__(character)))
                 elif data == "character":
+                    #Targeting variables
                     mon = ""
                     monsterTarget = None
+                    targetX = 0
+                    targetY = 0
                     #Will go clockwise from y+1 to x-1
                     if isinstance(w.map[x][y+1], Monster):
                         mon = w.map[x][y+1].__toString__()
                         monsterTarget = w.map[x][y+1]
+                        targetX = x
+                        targetY = y+1
                     elif isinstance(w.map[x+1][y], Monster):
                         mon = w.map[x+1][y].__toString__()
                         monsterTarget = w.map[x+1][y]
+                        targetX = x+1
+                        targetY = y
                     elif isinstance(w.map[x][y-1], Monster):
                         mon = w.map[x][y-1].__toString__()
                         monsterTarget = w.map[x][y-1]
+                        targetX = x
+                        targetY = y-1
                     elif isinstance(w.map[x-1][y], Monster):
                         mon = w.map[x-1][y].__toString__()
                         monsterTarget = w.map[x-1][y]
+                        targetX = x-1
+                        targetY = y
                     conn.send(str.encode(character + "=" + mon))
                 elif data == "f":
                     #Combat
@@ -113,12 +127,15 @@ def play(conn, character):
                                     monsterTarget.hp -= 1
                                     if monsterTarget.hp == 0:
                                         #remove from map
-                                        pass
+                                        w.map[targetX][targetY] = 0
                                 else:
                                     #Deduct health from Character
                                     ch.health -= 1
                                     w.map[x][y].remove(i)
                                     if ch.health == 0:
+                                        #Reset previous tile character was on
+                                        if not w.map[x][y]:
+                                            w.map[x][y] = 0
                                         ch.health = ch.getArmorStat()+3
                                         character = ch.__toString__()
                                         w.movePlayer(character, 0, 0, x, y)
@@ -127,8 +144,6 @@ def play(conn, character):
                                         characterSheet = ch
                                     else:
                                         character = ch.__toString__()
-                                        print(character)
-                                        print(i)
                                         w.map[x][y].append(character)
                     conn.send(str.encode(w.__toString__(character)))
                 else:

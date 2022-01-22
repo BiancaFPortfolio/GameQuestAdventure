@@ -49,13 +49,14 @@ class World:
 
     def movePlayer(self, character, x, y, prevX, prevY):
         oldTile = self.map[prevX][prevY]
-        for i in oldTile:
-            if character.__eq__(i):
-                oldTile.remove(character)
-            #Empty lists are False in python
-            if not oldTile:
-                self.map[prevX][prevY] = 0
-                
+        if isinstance(oldTile, list):
+            for i in oldTile:
+                if character.__eq__(i):
+                    oldTile.remove(character)
+                #Empty lists are False in python
+                if not oldTile:
+                    self.map[prevX][prevY] = 0
+                    
         if self.map[x][y] == 0:
             self.map[x][y] = []
         self.map[x][y].append(character)
