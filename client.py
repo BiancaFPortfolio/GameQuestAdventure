@@ -64,6 +64,7 @@ def main():
                 chara = chara.split("=")
                 character_stats(chara[0])
                 #Poll server for monster stats of nearby monster
+
                 monster_stats(chara[1])
                 #Update build of board on thread because costly
                 x = threading.Thread(target = update_board, args = (b, ))

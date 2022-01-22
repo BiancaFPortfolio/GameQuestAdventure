@@ -128,7 +128,9 @@ def play(conn, character):
                                     else:
                                         character = ch.__toString__()
                                         print(character)
+                                        print(i)
                                         w.map[x][y].append(character)
+                    conn.send(str.encode(w.__toString__(character)))
                 else:
                     #Data will be command from Player
                     if data == "d" and y < 19:
