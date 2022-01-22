@@ -9,12 +9,15 @@ class Character:
         self.weapons = {}
         self.armorStat = 0
         self.weaponStat = 0
+        self.gold = 0
 
     def getArmorStat(self):
         for k, v in self.armor:
             if int(v) > self.armorStat:
                 self.armorStat = int(v)
         
+        self.hp = 3 + self.armorStat
+
         return self.armorStat
     
     def getWeaponStat(self):
@@ -31,7 +34,7 @@ class Character:
         return False
 
     def __toString__(self):
-        string = self.name + "@" + str(self.health) + "@" + str(self.getArmorStat()) + "@" + str(self.getWeaponStat()) + "@weapons" 
+        string = self.name + "@" + str(self.health) + "@" + str(self.getArmorStat()) + "@" + str(self.getWeaponStat()) + "@" + str(self.gold) + "@weapons" 
         for k, v in self.weapons.items():
             string = string + "@" + k + ":" + v
         
@@ -46,8 +49,9 @@ class Character:
         chara = string.split("@")
         self.name = chara[0]
         self.health = int(chara[1])
+        self.gold = int(chara[4])
         armorFlag = False
-        for i in chara[5:]:
+        for i in chara[6:]:
             if i == "armor":
                 armorFlag = True
             elif not armorFlag:

@@ -128,6 +128,7 @@ def play(conn, character):
                                     if monsterTarget.hp == 0:
                                         #remove from map
                                         w.map[targetX][targetY] = 0
+                                        #HAVE PLAYER ROLL ON LOOT TABLE AND RECEIVE GOLD OR ITEMS
                                 else:
                                     #Deduct health from Character
                                     ch.health -= 1
@@ -175,6 +176,26 @@ def play(conn, character):
     print("Player has lost connection.")
     conn.close()
 
+def lootTable(monster, character):
+    table = monster.lootLevel
+    roll = random.randint(0, 99)
+    if table == 1:
+        if roll < 30:
+            character.gold += 1
+        elif roll < 60:
+            character.gold += 2
+        elif roll < 80:
+            character.gold += 3
+        elif roll < 90:
+            #Rare weapon drop
+            pass
+        else:
+            #Rare armor drop
+            pass
+            
+    else:
+        pass
+    pass
 
 while True:
     conn, addr = sock.accept()
