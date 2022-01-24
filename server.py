@@ -128,7 +128,13 @@ def play(conn, character):
                                     if monsterTarget.hp == 0:
                                         #remove from map
                                         w.map[targetX][targetY] = 0
+                                        w.monsterCount -= 1
                                         #HAVE PLAYER ROLL ON LOOT TABLE AND RECEIVE GOLD OR ITEMS
+                                        lootTable(monsterTarget, ch)
+                                        #Update character
+                                        w.map[x][y].remove(i)
+                                        character = ch.__toString__()
+                                        w.map[x][y].append(character)
                                 else:
                                     #Deduct health from Character
                                     ch.health -= 1
@@ -188,14 +194,14 @@ def lootTable(monster, character):
             character.gold += 3
         elif roll < 90:
             #Rare weapon drop
-            pass
+            character.weapons["Scythe of a Poor Soul"] = 1
+            character.weaponStat = 1
         else:
             #Rare armor drop
-            pass
-            
+            character.armor["Slimy sleeves"] = 1
+            character.armorStat = 1
     else:
         pass
-    pass
 
 while True:
     conn, addr = sock.accept()

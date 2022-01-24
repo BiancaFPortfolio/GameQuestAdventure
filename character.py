@@ -12,7 +12,7 @@ class Character:
         self.gold = 0
 
     def getArmorStat(self):
-        for k, v in self.armor:
+        for k, v in self.armor.items():
             if int(v) > self.armorStat:
                 self.armorStat = int(v)
         
@@ -21,7 +21,7 @@ class Character:
         return self.armorStat
     
     def getWeaponStat(self):
-        for i, v in self.weapons:
+        for i, v in self.weapons.items():
             if int(v) > self.weaponStat:
                 self.weaponStat = int(v)
 
@@ -36,12 +36,12 @@ class Character:
     def __toString__(self):
         string = self.name + "@" + str(self.health) + "@" + str(self.getArmorStat()) + "@" + str(self.getWeaponStat()) + "@" + str(self.gold) + "@weapons" 
         for k, v in self.weapons.items():
-            string = string + "@" + k + ":" + v
+            string = string + "@" + k + ":" + str(v)
         
         string += "@armor"
 
         for k, v in self.armor.items():
-            string = string + "@" +  k + ":" + v
+            string = string + "@" +  k + ":" + str(v)
 
         return string
 
