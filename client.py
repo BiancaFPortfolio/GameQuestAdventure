@@ -132,20 +132,17 @@ def update_board(b):
         boardState = net.send("board").decode()
         board = boardState.split("@")
         b.update(board)
-        pygame.display.update()
     except Exception as e:
         print(e)
 
 def character_stats(character):
     chara = CharacterInterface(20, 20, 240, 680, character)
     chara.draw(win)
-    pygame.display.update()
     
 
 def monster_stats(monster):
     mon = MonsterInterface(1020, 20, 240, 680, monster)
     mon.draw(win)
-    pygame.display.update()
 
 if __name__ == "__main__":
     main()

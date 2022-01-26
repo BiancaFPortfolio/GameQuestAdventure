@@ -1,6 +1,6 @@
 import socket
 
-server = "172.20.20.20"
+server = "10.0.2.15"
 port = 5555
 RECV_BITS = 2048
 
