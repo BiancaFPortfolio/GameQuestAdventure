@@ -43,36 +43,36 @@ def main():
     
     pygame.display.update()
     while running:
-        clock.tick(100)
+        clock.tick(60)
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-                pygame.quit()
-            if main_menu_running:
-                x = threading.Thread(target = main_menu_draw, args = ())
-                x.start()
-                chara = main_menu(event)
-                x.join()
-                if chara != None:
-                    chara.decode()
-                    main_menu_running = False
-                    create_board()
-            else:
-                #Poll server for updated character information
-                chara = net.send("character").decode()
-                chara = chara.split("=")
-                character_stats(chara[0])
-                #Poll server for monster stats of nearby monster
-
-                monster_stats(chara[1])
-                #Update build of board on thread because costly
-                x = threading.Thread(target = update_board, args = (b, ))
-                x.start()
-                update_action(event)
-                pygame.display.update()
-                x.join()
-                
+            try:
+                if event.type == pygame.QUIT:
+                    running = False
+                    pygame.quit()
+                if main_menu_running:
+                    x = threading.Thread(target = main_menu_draw, args = ())
+                    x.start()
+                    chara = main_menu(event)
+                    x.join()
+                    if chara != None:
+                        chara.decode()
+                        main_menu_running = False
+                        create_board()
+                else:
+                    #Poll server for updated character information and monster stats
+                    chara = net.send("character").decode()
+                    chara = chara.split("=")
+                    character_stats(chara[0])
+                    monster_stats(chara[1])
+                    #Update build of board on thread because costly
+                    x = threading.Thread(target = update_board, args = (b, ))
+                    x.start()
+                    update_action(event)
+                    x.join()
+                    pygame.display.update()
+            except Exception as e:
+                print(e)
 
 def main_menu(event):
     #User authentication UI
@@ -140,6 +140,7 @@ def character_stats(character):
     chara = CharacterInterface(20, 20, 240, 680, character)
     chara.draw(win)
     pygame.display.update()
+    
 
 def monster_stats(monster):
     mon = MonsterInterface(1020, 20, 240, 680, monster)

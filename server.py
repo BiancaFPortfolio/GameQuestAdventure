@@ -6,7 +6,7 @@ from game import *
 from login import Login
 
 #Server globals
-server = "10.0.2.15"
+server = "172.20.20.20"
 port = 5555
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 SERVER_CAP = 20

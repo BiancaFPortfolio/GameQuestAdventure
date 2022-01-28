@@ -29,7 +29,7 @@ class Login:
             if username == k:
                 return None
         #Replace with character sheet in string format
-        character = username + "@" + "3" + "@" + "0" + "@" + "0" + "@" + "0" "@weapons" + "@armor"
+        character = username + "@" + "3" + "@" + "0" + "@" + "0" + "@" + "0" + "@weapons" + "@armor"
         self.dict[username] = [self.__hash__(password), character]
         return character
 

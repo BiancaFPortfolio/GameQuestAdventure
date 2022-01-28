@@ -62,6 +62,14 @@ class CharacterInterface:
         self.armorBonus = "Armor: +" + self.character[2]
         #Weapon bonus
         self.weaponBonus = "Weapon: +" + self.character[3]
+        #Gold and inventory assignments
+        self.gold = self.character[4] + " gold"
+        self.inventory = []
+        #for i in self.character[6:]:
+            #if i == "armor":
+                #pass
+            #else:
+                #self.inventory.append(i)
         #Text
         self.nameText = font.render(self.name, True, self.font_color)
         self.HPText = font.render(self.health, True, self.font_color)
@@ -74,6 +82,24 @@ class CharacterInterface:
         win.blit(self.HPText, (self.rect.x+BOX_PIXEL_GAP_XY, self.rect.y+50))
         win.blit(self.ArmorText, (self.rect.x+BOX_PIXEL_GAP_XY, self.rect.y+80))
         win.blit(self.WeaponText, (self.rect.x+BOX_PIXEL_GAP_XY, self.rect.y+110))
+
+    def drawInventory(self, win):
+        #Loop through inventory and blit the text in little bars, 
+        #In server, create an inventory max to avoid graphical bugs
+        y = 240
+        for i in 11:
+            #Print 10 inventory boxes
+            rect = pygame.Rect(self.rect.x + BOX_PIXEL_GAP_XY, 500, y, 15)
+            y += 15
+            #Check if i matches to an inventory index to fill the slot
+            try:
+                #Render text
+                text = font.render(self.inventory[i], True, self.font_color)
+                #Blit text
+                win.blit(text, (rect.x+BOX_PIXEL_GAP_XY, rect.y+2))
+            except:
+                #Not a valid index, do nothing
+                pass
 
 class LoginButton:
     def __init__(self, x, y, w, h, text, ty):
