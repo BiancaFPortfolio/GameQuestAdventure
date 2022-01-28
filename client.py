@@ -5,10 +5,13 @@ import threading
 
 clientNum = 0
 
+pygame.init()
+
 #UI elements
 width = 1280
 height = 720
 win = pygame.display.set_mode((width, height))
+#win = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption("Client")
 #Network object
 net = Network()
@@ -43,7 +46,7 @@ def main():
     
     pygame.display.update()
     while running:
-        clock.tick(60)
+        clock.tick_busy_loop(60)
 
         for event in pygame.event.get():
             try:
@@ -51,10 +54,8 @@ def main():
                     running = False
                     pygame.quit()
                 if main_menu_running:
-                    x = threading.Thread(target = main_menu_draw, args = ())
-                    x.start()
+                    main_menu_draw()
                     chara = main_menu(event)
-                    x.join()
                     if chara != None:
                         chara.decode()
                         main_menu_running = False
@@ -66,10 +67,8 @@ def main():
                     character_stats(chara[0])
                     monster_stats(chara[1])
                     #Update build of board on thread because costly
-                    x = threading.Thread(target = update_board, args = (b, ))
-                    x.start()
+                    update_board(b)
                     update_action(event)
-                    x.join()
                     pygame.display.update()
             except Exception as e:
                 print(e)

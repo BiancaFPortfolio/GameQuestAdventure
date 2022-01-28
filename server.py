@@ -5,8 +5,10 @@ import pygame
 from game import *
 from login import Login
 
+pygame.init()
+
 #Server globals
-server = "10.0.2.15"
+server = "127.0.0.1"
 port = 5555
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 SERVER_CAP = 20
