@@ -4,6 +4,7 @@ from network import Network
 pygame.init()
 #UI constants
 font = pygame.font.Font(None, 32)
+small_font = pygame.font.Font(None, 16)
 inactive_color = pygame.Color(119, 136, 153) #LightSlateGray
 active_color = pygame.Color(47, 79, 79) #DarkSlateGray
 font_color = pygame.Color(0, 0, 0) #Black
@@ -51,7 +52,6 @@ class CharacterInterface:
     def __init__(self, x, y, w, h, character):
         self.rect = pygame.Rect(x, y, w, h)
         self.character = character.split("@")
-        self.font = font
         self.bgcolor = active_color
         self.font_color = pygame.Color(255, 255, 255)
         #Character name
@@ -65,16 +65,30 @@ class CharacterInterface:
         #Gold and inventory assignments
         self.gold = self.character[4] + " gold"
         self.inventory = []
+        armorFlag = False
+        itemFlag = False
         for i in self.character[6:]:
             if i == "armor":
-                pass
+                armorFlag = True
+            elif i == "items":
+                itemFlag = True
             else:
-                self.inventory.append(i)
+                #Build inventory item string
+                spl = i.split(":")
+                if not armorFlag:
+                    splStr = spl[0] + " : Weapon +" + str(spl[1]) #+ " : " + str(spl[2]) + "g"
+                elif not itemFlag:
+                    splStr = spl[0] + " : Armor +" + str(spl[1]) #+ " : " + str(spl[2]) + "g"
+                else:
+                    splStr = spl[0] + " : Armor +" + str(spl[1]) #+ " : " + str(spl[2]) + "g"
+                
+                self.inventory.append(splStr)
         #Text
         self.nameText = font.render(self.name, True, self.font_color)
         self.HPText = font.render(self.health, True, self.font_color)
         self.ArmorText = font.render(self.armorBonus, True, self.font_color)
         self.WeaponText = font.render(self.weaponBonus, True, self.font_color)
+        self.goldText = font.render(self.gold, True, self.font_color)
 
     def draw(self, win):
         pygame.draw.rect(win, self.bgcolor, self.rect)
@@ -82,6 +96,7 @@ class CharacterInterface:
         win.blit(self.HPText, (self.rect.x+BOX_PIXEL_GAP_XY, self.rect.y+50))
         win.blit(self.ArmorText, (self.rect.x+BOX_PIXEL_GAP_XY, self.rect.y+80))
         win.blit(self.WeaponText, (self.rect.x+BOX_PIXEL_GAP_XY, self.rect.y+110))
+        win.blit(self.goldText, (self.rect.x+BOX_PIXEL_GAP_XY, self.rect.y+140))
         self.drawInventory(win)
 
     def drawInventory(self, win):
@@ -96,9 +111,9 @@ class CharacterInterface:
             #Check if i matches to an inventory index to fill the slot
             try:
                 #Render text
-                text = font.render(self.inventory[i], True, self.font_color)
+                text = small_font.render(self.inventory[i], True, self.font_color)
                 #Blit text
-                win.blit(text, (rect.x+BOX_PIXEL_GAP_XY, rect.y+2))
+                win.blit(text, (rect.x+BOX_PIXEL_GAP_XY, rect.y+10))
             except:
                 #Not a valid index, do nothing
                 pass
