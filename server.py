@@ -1,5 +1,4 @@
 from _thread import *
-from re import X
 import socket
 import pygame
 from game import *

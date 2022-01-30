@@ -27,11 +27,19 @@ START_X = 320
 START_Y = 18
 #Board 
 b = None
+#Button dictionary to access in constant time
+gameButtons = {pygame.K_w : "w", pygame.K_s : "s",
+                pygame.K_a : "a", pygame.K_d : "d", 
+                pygame.K_f : "f", pygame.K_1 : "1", 
+                pygame.K_2 : "2", pygame.K_3 : "3", 
+                pygame.K_4 : "4", pygame.K_5 : "5",
+                pygame.K_6 : "6", pygame.K_7 : "7",
+                pygame.K_8 : "8", pygame.K_9 : "9",
+                pygame.K_0 : "0"}
 
 def redrawWindow():
     win.fill((0, 0, 0))
     pygame.display.update()
-
 
 def main():
     global b
@@ -100,18 +108,10 @@ def main_menu_draw():
 
 def update_action(event):
     if event.type == pygame.KEYDOWN:
-        #UPGRADE TO 3.10 FOR MATCHES
-        #Directional
-        if event.key == pygame.K_w:
-            net.send("w")
-        elif event.key == pygame.K_s:
-            net.send("s")
-        elif event.key == pygame.K_a:
-            net.send("a")
-        elif event.key == pygame.K_d:
-            net.send("d")
-        elif event.key == pygame.K_f:
-            net.send("f")
+        #Use dictionary to send in constant time
+        net.send(gameButtons.get(event.key))
+        
+        
 
 def create_board():
     global b
