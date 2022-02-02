@@ -35,7 +35,9 @@ gameButtons = {pygame.K_w : "w", pygame.K_s : "s",
                 pygame.K_4 : "4", pygame.K_5 : "5",
                 pygame.K_6 : "6", pygame.K_7 : "7",
                 pygame.K_8 : "8", pygame.K_9 : "9",
-                pygame.K_0 : "0"}
+                pygame.K_0 : "0", pygame.K_u : "u",
+                pygame.K_i : "i", pygame.K_o : "o", 
+                pygame.K_p : "p"}
 
 def redrawWindow():
     win.fill((0, 0, 0))
@@ -111,8 +113,6 @@ def update_action(event):
         #Use dictionary to send in constant time
         net.send(gameButtons.get(event.key))
         
-        
-
 def create_board():
     global b
     #Will constantly rebuild the board from the data in the server

@@ -172,7 +172,28 @@ def play(conn, character):
                         if w.map[x+1][y] == 0 or isinstance(w.map[x+1][y], list):
                             w.movePlayer(character, x+1, y, x, y)
                             x += 1
-                        pass
+                    else:
+                        #Shop
+                        #Check if character is in shop tile
+                        if x == 19 and y == 0:
+                            #Convert to Shop inventory slot, buy item
+                            if data == "u":
+                                for i in w.map[x][y]:
+                                    if character.__eq__(i):
+                                        w.map[x][y].remove(i)
+                                characterSheet.weapons["Sword of testing"] = 1
+                                character = characterSheet.__toString__()
+                                w.map[x][y].append(character)
+                            elif data == "i":
+                                pass
+                            elif data == "o":
+                                pass
+                            elif data ==  "p":
+                                pass
+                            else:
+                                #Player sells item in inventory slot corresponding to data
+                                pass
+                            pass
                     conn.send(str.encode(w.__toString__(character)))
             #Update board
             w.addMonster()
